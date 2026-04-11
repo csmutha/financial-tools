@@ -40,9 +40,9 @@ const makeROIFields = sym => [
   },
   {
     key: "rent", label: "Monthly Rent",
-    min: 500, max: 100000, step: 500,
+    min: 500, max: 50000000, step: 500,
     unit: sym, isMoney: true,
-    fmt: v => v >= 1000 ? (v / 1000).toFixed(1) + "K" : v,
+    fmt: v => v >= 1000000 ? (v / 1000000).toFixed(1) + "M" : v >= 1000 ? (v / 1000).toFixed(1) + "K" : v,
   },
   {
     key: "rentIncrease", label: "Annual Rent Increase",
