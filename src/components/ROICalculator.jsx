@@ -168,12 +168,20 @@ function SectionHeader({ icon, text }) {
 export default function ROICalculator() {
   const [vals, setVals]       = useState(ROI_DEFAULTS);
   const [emiVals, setEmiVals] = useState(EMI_DEFAULTS);
-  const [currency, setCurrency] = useState("AED");
+  const [currency, setCurrency] = useState("INR");
   const [tab, setTab]         = useState("summary");
   const [emiEnabled, setEmiEnabled] = useState(false);
 
   const set    = k => v => setVals(prev => ({ ...prev, [k]: v }));
   const setEmi = k => v => setEmiVals(prev => ({ ...prev, [k]: v }));
+
+  const reset = () => {
+    setVals(ROI_DEFAULTS);
+    setEmiVals(EMI_DEFAULTS);
+    setCurrency("INR");
+    setEmiEnabled(false);
+    setTab("summary");
+  };
 
   const cur    = CURRENCIES.find(c => c.code === currency);
   const fm     = v => fmtMoney(v, currency);
@@ -229,6 +237,8 @@ export default function ROICalculator() {
         .tab-btn:not(.active):hover{background:#d2e3fc}
         tr:hover td{background:rgba(26,115,232,0.03)!important}
         .emi-panel{border-left:3px solid #1a73e8;padding-left:14px;margin-left:2px}
+        .main-layout{display:grid;grid-template-columns:360px 1fr;gap:16px;align-items:start}
+        @media(max-width:700px){.main-layout{grid-template-columns:1fr}}
       `}</style>
 
       <div style={{ maxWidth: 900, margin: "0 auto" }}>
@@ -242,13 +252,23 @@ export default function ROICalculator() {
               style={{ width: "100%", display: "block", borderRadius: 14 }}
             />
           </div>
-          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 10 }}>
+            <button
+              onClick={reset}
+              style={{
+                background: "none", border: "1.5px solid #cdd4e0", borderRadius: 8,
+                padding: "5px 12px", fontSize: 12, fontWeight: 600, color: "#888",
+                cursor: "pointer", fontFamily: "inherit",
+              }}
+            >
+              Reset
+            </button>
             <CurrencyDropdown value={currency} onChange={setCurrency} />
           </div>
         </div>
 
         {/* ── Main 2-column layout ── */}
-        <div style={{ display: "grid", gridTemplateColumns: "360px 1fr", gap: 16, alignItems: "start" }}>
+        <div className="main-layout">
 
           {/* ════ LEFT: Inputs ════ */}
           <div style={{
